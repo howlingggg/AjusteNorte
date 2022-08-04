@@ -6,8 +6,12 @@ from time import sleep
 from hmc5883l import HMC5883L
 from micropyGPS import MicropyGPS
 #https://github.com/inmcm/micropyGPS
+
+
 boton = machine.Pin(16, machine.Pin.IN, machine.Pin.PULL_DOWN)
-#GPS Module UART Connection Conectar Rx a TX CRUZADOS!!!! howlin
+
+
+#GPS Module UART Connection Conectar Rx a TX CRUZADOS!!!!
 gps_module = UART(1, baudrate=9600, tx=Pin(4), rx=Pin(5))
 TIMEZONE = -3
 my_gps = MicropyGPS(TIMEZONE)
@@ -23,6 +27,7 @@ m = MPU6500(i2c)
 filtered_x_value = 0.0 
 filtered_y_value = 0.0
 # _________________________________________________
+
 def get_reading()->float:
     ''' Returns the readings from the sensor '''
     global filtered_y_value, filtered_x_value
@@ -92,11 +97,13 @@ while True:
         print(sensor.format_result(x, y, z))
         time.sleep(2)
         if boton.value() == 1:
-            import pruebapull
+            print("Iniciando Calibracion")
+            import HMC5882Lcalibration
+            time.sleep(10)
             continue
         else:
             continue
-        time.sleep(2)
+        
         continue
     #_________________________________________________
     t = my_gps.timestamp
@@ -115,11 +122,16 @@ while True:
     x, y, z = sensor.read()
     print(sensor.format_result(x, y, z))
     time.sleep(2)
+    
     if boton.value() == 1:
-        import pruebapull
+        print("Iniciando Calibracion")
+        import HMC5882Lcalibration
+        time.sleep(10)
         continue
     else:
         continue
-    time.sleep(2)
     continue
+
     #_________________________________________________
+
+
