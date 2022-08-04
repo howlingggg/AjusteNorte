@@ -17,10 +17,13 @@ class HMC5883L:
     }
     
     # Correction to be set after calibration
-    xs=1
-    ys=0.96851008
-    xb=103.334
-    yb=69.374008
+    f= open("datos.txt")
+    xs=float(f.readline())
+    ys=float(f.readline())
+    xb=float(f.readline())
+    yb=float(f.readline())
+    print(xs,ys,xb,yb)
+    f.close()
     
     def __init__(self, scl=15, sda=14, address=0x1e, gauss='1.9', declination=(5, 58)):
         self.i2c = i2c = machine.SoftI2C(scl=machine.Pin(scl), sda=machine.Pin(sda), freq=15000)
@@ -94,3 +97,4 @@ class HMC5883L:
         degrees, minutes = self.heading(x, y)
 #         return 'X: {:.4f}, Y: {:.4f}, Z: {:.4f}, Heading: {}° {}′ '.format(x, y, z, degrees, minutes)
         return 'Heading: {}° {} ′'.format(degrees, minutes)
+
