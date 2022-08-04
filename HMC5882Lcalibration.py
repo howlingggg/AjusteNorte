@@ -12,9 +12,17 @@ Xmax=-1000
 Ymin=1000
 Ymax=-1000
 
+f = open ('datos.txt','w')
+f.write('1\n')
+f.write('1\n')
+f.write('0\n')
+f.write('0')
+f.close()
+
+
 while True:
     contador = 0
-    while contador < 15:
+    while contador < 15:  
         sleep(0.2)
         x, y, z = sensor.read()
         Xmin=min(x,Xmin)
@@ -31,10 +39,16 @@ while True:
         ys=(Xmax-Xmin)/(Ymax-Ymin)
         xb =xs*(1/2*(Xmax-Xmin)-Xmax)
         yb =xs*(1/2*(Ymax-Ymin)-Ymax)
-        print("Valores de calibracion:")
-        print("xs="+str(xs))
-        print("xb="+str(xb))
-        print("ys="+str(ys))
-        print("yb="+str(yb))
+        print("calibracion Terminada")
+#         print("xs="+str(xs))
+#         print("xb="+str(xb))
+#         print("ys="+str(ys))
+#         print("yb="+str(yb))
+        f = open ('datos.txt','w')
+        f.write(''+str(xs))
+        f.write('\n'+str(ys))
+        f.write('\n'+str(xb))
+        f.write('\n'+str(yb))
+        f.close()
         break
 
