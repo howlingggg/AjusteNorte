@@ -7,7 +7,7 @@ from hmc5883l import HMC5883L
 from micropyGPS import MicropyGPS
 #https://github.com/inmcm/micropyGPS
 boton = machine.Pin(16, machine.Pin.IN, machine.Pin.PULL_DOWN)
-#GPS Module UART Connection Conectar Rx a TX CRUZADOS!!!!
+#GPS Module UART Connection Conectar Rx a TX CRUZADOS!!!! howlin
 gps_module = UART(1, baudrate=9600, tx=Pin(4), rx=Pin(5))
 TIMEZONE = -3
 my_gps = MicropyGPS(TIMEZONE)
