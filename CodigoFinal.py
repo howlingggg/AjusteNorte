@@ -8,7 +8,7 @@ from micropyGPS import MicropyGPS
 #https://github.com/inmcm/micropyGPS
 
 
-boton = machine.Pin(16, machine.Pin.IN, machine.Pin.PULL_DOWN)
+blue = UART (0,9600) #Defino el modulo bluetooth en uart 0 (Rx 0 Tx 1)
 
 
 #GPS Module UART Connection Conectar Rx a TX CRUZADOS!!!!
@@ -20,8 +20,8 @@ sensor = HMC5883L()
 #__________________________________________________
 MPU = 0x68
 id = 0
-sda = Pin(0)
-scl = Pin(1)
+sda = Pin(16)
+scl = Pin(17)
 i2c = I2C(id=id, scl=scl, sda=sda)
 m = MPU6500(i2c)
 filtered_x_value = 0.0 
@@ -56,8 +56,12 @@ def show():
     ''' Shows the Pitch, Rool and heading '''
     x, y, z, pitch, roll = get_reading()
     print("Pitch",round(pitch,1), "Roll",round(roll, 1))
+    blue.write("Pitch: "+str(pitch))
+    blue.write("\n")
+    blue.write("Roll: "+str(roll))
+    blue.write("\n")
     sleep(0.2)
-
+    
 # reset orientation to zero
 x,y,z, pitch_bias, roll_bias = get_reading()
 
@@ -90,20 +94,26 @@ while True:
     longitude = convert(my_gps.longitude)
     #_________________________________________________
     if (latitude == None ):
-        
         print("Sin Datos de satelite, espere...")
         show()
         x, y, z = sensor.read()
         print(sensor.format_result(x, y, z))
+        blue.write(sensor.format_result(x, y, z))
+        blue.write('\n')
+        blue.write("Sin datos de satelite...")
+        blue.write('\n')
         time.sleep(2)
-        if boton.value() == 1:
-            print("Iniciando Calibracion")
-            import HMC5882Lcalibration
-            time.sleep(10)
-            continue
-        else:
-            continue
-        
+        if blue.any():
+            msg = blue.readline()
+            print(msg)
+            if msg == b'calibrar\r\n': 
+                print("Iniciando Calibracion")
+                blue.write("Iniciando Calibracion")
+                import HMC5882Lcalibration
+                time.sleep(5)
+                continue
+            else:
+                continue
         continue
     #_________________________________________________
     t = my_gps.timestamp
@@ -113,25 +123,40 @@ while True:
     gpsdate = my_gps.date_string('long')
     speed = my_gps.speed_string('kph') #'kph' or 'mph' or 'knot'
     #_________________________________________________
-    
+
+    msg = blue.readline()
     print('Lat:', latitude)
     print('Lng:', longitude)
     print('time:', gpsTime)
     print('Date:', gpsdate)
+    blue.write('Lat: '+str(latitude))
+    blue.write('\n')
+    blue.write('Lng: '+str (longitude))
+    blue.write('\n')
+    blue.write('time: '+str (gpsTime))
+    blue.write('\n')
+    blue.write('Date: '+str (gpsdate))
+    blue.write('\n')
     show()
     x, y, z = sensor.read()
     print(sensor.format_result(x, y, z))
+    blue.write(sensor.format_result(x, y, z))
+    blue.write('\n')
+    blue.write("Sin datos de satelite...")
+    blue.write('\n')
     time.sleep(2)
-    
-    if boton.value() == 1:
-        print("Iniciando Calibracion")
-        import HMC5882Lcalibration
-        time.sleep(10)
-        continue
-    else:
-        continue
+
+    if blue.any():
+        msg = blue.readline()
+        print(msg)
+        if msg == b'calibrar\r\n': 
+            print("Iniciando Calibracion")
+            blue.write("Iniciando Calibracion")
+            import HMC5882Lcalibration
+            time.sleep(5)
+            continue
+        else:
+            continue
     continue
-
     #_________________________________________________
-
 
