@@ -1,4 +1,3 @@
-
 import utime
 from machine import I2C
 from hmc5883l import HMC5883L
@@ -22,8 +21,8 @@ f.close()
 
 while True:
     contador = 0
-    while contador < 15:  
-        sleep(0.2)
+    while contador < 120:  
+        sleep(0.1)
         x, y, z = sensor.read()
         Xmin=min(x,Xmin)
         Xmax=max(x,Xmax)
@@ -32,7 +31,6 @@ while True:
         print(sensor.format_result(x, y, z))
         print("Xmin="+str(Xmin)+"; Xmax="+str(Xmax)+"; Ymin="+str(Ymin)+"; Ymax="+str(Ymax))
         contador +=1
-        sleep(0.2)
     else:
         print()
         xs=1
@@ -51,4 +49,3 @@ while True:
         f.write('\n'+str(yb))
         f.close()
         break
-
