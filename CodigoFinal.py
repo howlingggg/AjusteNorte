@@ -1,3 +1,5 @@
+#Versiones Proximas en Main.py
+
 from machine import Pin, UART, I2C
 import utime, time
 from math import sqrt, atan2, pi, copysign, sin, cos
