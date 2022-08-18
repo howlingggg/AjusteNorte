@@ -100,8 +100,8 @@ while True:
         print(sensor.format_result(x, y, z))
         blue.write(sensor.format_result(x, y, z))
         blue.write('\n')
-        blue.write("Sin datos de satelite...")
-        blue.write('\n')
+#         blue.write("Sin datos de satelite...")
+#         blue.write('\n')
         time.sleep(2)
         if blue.any():
             msg = blue.readline()
