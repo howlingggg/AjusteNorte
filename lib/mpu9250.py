@@ -1,24 +1,13 @@
-# Copyright (c) 2018-2020 Mika Tuupola
 #
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of  this software and associated documentation files (the "Software"), to
-# deal in  the Software without restriction, including without limitation the
-# rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
-# sell copied of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
+# This file is part of MicroPython MPU9250 driver
+# Copyright (c) 2018 Mika Tuupola
 #
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
+# Licensed under the MIT license:
+#   http://www.opensource.org/licenses/mit-license.php
 #
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
-# https://github.com/tuupola/micropython-mpu9250
+# Project home:
+#   https://github.com/tuupola/micropython-mpu9250
+#
 
 """
 MicroPython I2C driver for MPU9250 9-axis motion tracking device
@@ -30,13 +19,7 @@ from mpu6500 import MPU6500
 from ak8963 import AK8963
 # pylint: enable=import-error
 
-__version__ = "0.3.0"
-
-# Used for enabling and disabling the I2C bypass access
-_INT_PIN_CFG = const(0x37)
-_I2C_BYPASS_MASK = const(0b00000010)
-_I2C_BYPASS_EN = const(0b00000010)
-_I2C_BYPASS_DIS = const(0b00000000)
+__version__ = "0.2.0"
 
 class MPU9250:
     """Class which provides interface to MPU9250 9-axis motion tracking device."""
@@ -45,12 +28,6 @@ class MPU9250:
             self.mpu6500 = MPU6500(i2c)
         else:
             self.mpu6500 = mpu6500
-
-        # Enable I2C bypass to access AK8963 directly.
-        char = self.mpu6500._register_char(_INT_PIN_CFG)
-        char &= ~_I2C_BYPASS_MASK # clear I2C bits
-        char |= _I2C_BYPASS_EN
-        self.mpu6500._register_char(_INT_PIN_CFG, char)
 
         if ak8963 is None:
             self.ak8963 = AK8963(i2c)
@@ -74,13 +51,6 @@ class MPU9250:
         `gyro_sf=SF_DEG_S` parameter to the MPU6500 constructor.
         """
         return self.mpu6500.gyro
-
-    @property
-    def temperature(self):
-        """
-        Die temperature in celcius as a float.
-        """
-        return self.mpu6500.temperature
 
     @property
     def magnetic(self):

@@ -1,31 +1,20 @@
-# Copyright (c) 2018-2019 Mika Tuupola
 #
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of  this software and associated documentation files (the "Software"), to
-# deal in  the Software without restriction, including without limitation the
-# rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
-# sell copied of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
+# This file is part of MicroPython MPU9250 driver
+# Copyright (c) 2018 Mika Tuupola
 #
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
+# Licensed under the MIT license:
+#   http://www.opensource.org/licenses/mit-license.php
 #
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
-# https://github.com/tuupola/micropython-mpu9250
-# https://www.akm.com/akm/en/file/datasheet/AK8963C.pdf
+# See:
+#   https://github.com/tuupola/micropython-mpu9250
+#   https://www.akm.com/akm/en/file/datasheet/AK8963C.pdf
+#
 
 """
 MicroPython I2C driver for AK8963 magnetometer
 """
 
-__version__ = "0.2.1"
+__version__ = "0.2.0"
 
 # pylint: disable=import-error
 import ustruct
@@ -73,7 +62,7 @@ class AK8963:
         self._offset = offset
         self._scale = scale
 
-        if 0x68 != self.whoami:
+        if 0x48 != self.whoami:
             raise RuntimeError("AK8963 not found in I2C bus.")
 
         # Sensitivity adjustement values
@@ -194,8 +183,6 @@ class AK8963:
 
     def _register_char(self, register, value=None, buf=bytearray(1)):
         if value is None:
-            print ("hola")
-            
             self.i2c.readfrom_mem_into(self.address, register, buf)
             return buf[0]
 

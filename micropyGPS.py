@@ -34,9 +34,9 @@ class MicropyGPS(object):
     __FIX_3D = 3
     __DIRECTIONS = ('N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W',
                     'WNW', 'NW', 'NNW')
-    __MONTHS = ('January', 'February', 'March', 'April', 'May',
-                'June', 'July', 'August', 'September', 'October',
-                'November', 'December')
+    __MONTHS = ('Enero', 'Febrero', 'Marzo', 'Abril', 'May0',
+                'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre',
+                'Novimbre', 'Decimbre')
 
     def __init__(self, local_offset=0, location_formatting='ddm'):
         """
@@ -772,13 +772,13 @@ class MicropyGPS(object):
 
             # Determine Date Suffix
             if self.date[0] in (1, 21, 31):
-                suffix = 'st'
+                suffix = ''
             elif self.date[0] in (2, 22):
-                suffix = 'nd'
+                suffix = ''
             elif self.date[0] == (3, 23):
-                suffix = 'rd'
+                suffix = ''
             else:
-                suffix = 'th'
+                suffix = ''
 
             day = str(self.date[0]) + suffix  # Create Day String
 
